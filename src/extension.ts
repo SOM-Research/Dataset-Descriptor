@@ -6,8 +6,7 @@ import {
 
 import { createDatasetDescriptorServices, DatasetDescriptorServices} from './language-server/dataset-descriptor-module';
 
-import csvParser from 'csv-parser';
-import fs from 'fs';
+
 
 
 let client: LanguageClient;
@@ -83,8 +82,16 @@ function startLanguageClient(context: vscode.ExtensionContext): LanguageClient {
 
 async function loadCsv(context: vscode.ExtensionContext, filepath: vscode.Uri) {
     console.log('start');
+
+    const uploader = datasetServices.uploader.DatasetUploader;
+    const result = uploader.uploadDataset(filepath);
+    console.log(result);
+    /*
     const results:Array<any> = [];
     fs.createReadStream(filepath.fsPath)
+        .on('error', (error) => {
+            console.log('error');
+        })
         .pipe(csvParser())
         .on('data', (data) => results.push(data))
         .on('end', () => {
@@ -93,16 +100,17 @@ async function loadCsv(context: vscode.ExtensionContext, filepath: vscode.Uri) {
             //   { NAME: 'Daffy Duck', AGE: '24' },
             //   { NAME: 'Bugs Bunny', AGE: '22' }
             // ]
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                //const document = editor.document;
+                editor.edit(editBuilder => {
+                    editBuilder.insert(new vscode.Position(30,0),"Insterted!");
+                });
+            }
+            vscode.window.showInformationMessage('File Loaded');
         });
-
-    const editor = vscode.window.activeTextEditor;
-    if (editor) {
-        //const document = editor.document;
-        editor.edit(editBuilder => {
-            editBuilder.insert(new vscode.Position(30,0),"Insterted!");
-        });
-    }
-    await vscode.window.showInformationMessage('File Loaded');
+        */
+   
 }
 
 let previewPanel : vscode.WebviewPanel;
@@ -129,8 +137,6 @@ async function initHtmlPreview(context: vscode.ExtensionContext) {
     const text = vscode.window.activeTextEditor?.document.getText();
     
     if (text) {
-        const returner = generator.generate(text);
-        console.log(returner);
         updateHtmlPreview(generator.generate(text));
     }
     //updateHtmlPreview("<h1> hello world </h1>")

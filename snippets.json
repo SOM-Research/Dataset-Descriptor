@@ -36,7 +36,7 @@
             "\t\t\t\t\t description \"Instance Description\"",
             "\t\t\t\t\t type raw",
             "\t\t\t\t\t withAttributes:",
-            "\t\t\t\t\t\t attribute attribute1Id ofType string description: \"Describre the attribute \" ",
+            "\t\t\t\t\t\t attribute attribute1Id ofType string description: \"Describre the attribute \" "
 		],
 		"description": "Dataset's general information scaffold"
 	},
